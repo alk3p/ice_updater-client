@@ -30,14 +30,14 @@ let currentDevice = '';
 onMount(() => {
     const navigationDrawer = document.querySelector(".navigation-drawer");
 
-    const isDesktop = window.innerWidth >= 1080;
-    navigationDrawer.open = isDesktop;
-    navigationDrawer.mobile = !isDesktop;
-
     const toggleButton = document.querySelector(".drawer-toggle");
     toggleButton.addEventListener("click", () => navigationDrawer.open = !navigationDrawer.open);
 
-    window.addEventListener('resize', () => navigationDrawer.open = window.innerWidth >= 1080);
+    window.addEventListener('resize', () => {
+        if (window.innerWidth >= 1080)
+            navigationDrawer.style = "top: 64px; bottom: 0px; left: 0px; display: block;"
+        navigationDrawer.open = window.innerWidth >= 1080
+    });
 
     const currentPath = $page.url.pathname;
     const device = currentPath.match(/\/devices\/(.+?)\/builds/);
@@ -49,6 +49,11 @@ onMount(() => {
             const cll = item.closest("mdui-collapse-item");
             if (cll && cll.parentElement)  cll.parentElement.value = cll.value;
         }
+    }
+
+    if (window.innerWidth >= 1080) {
+        navigationDrawer.style = "top: 64px; bottom: 0px; left: 0px; display: block;"
+        navigationDrawer.open = true;
     }
 });
 
@@ -88,7 +93,7 @@ onNavigate(() => {
         </mdui-dropdown>
     </mdui-top-app-bar>
 
-    <mdui-navigation-drawer open close-on-overlay-click contained class="navigation-drawer" style="position: absolute; top: 64px; bottom: 0px; left: 0px; display: block;" placement="left">
+    <mdui-navigation-drawer close-on-overlay-click contained class="navigation-drawer" placement="left">
         <mdui-list>
             <mdui-collapse accordion id="collapse-device-selector">
                 {#each oems as {devices, name}, i}
