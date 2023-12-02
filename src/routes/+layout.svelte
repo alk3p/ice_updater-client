@@ -19,7 +19,7 @@ import 'mdui/components/top-app-bar-title.js';
 
 import { onMount } from 'svelte';
 import { page } from '$app/stores';
-import { onNavigate } from '$app/navigation'
+import { beforeNavigate, onNavigate } from '$app/navigation'
 
 /** @type {import('./$types').LayoutData} */
 export let data;
@@ -57,6 +57,11 @@ onMount(() => {
     }
 });
 
+beforeNavigate(() => {
+    const otaSelector = document.getElementById("collapse-ota-selector");
+    if (otaSelector)  otaSelector.value = undefined;
+})
+
 onNavigate(() => {
     document.querySelectorAll('[id^="device-item-"]').forEach((device) => {
         if (device.active && device.id != `device-item-${currentDevice}`)
@@ -78,7 +83,7 @@ onNavigate(() => {
         <mdui-top-app-bar-title>
             <a href="/" style="color: inherit; text-decoration: none;"
                 on:click={() => { currentDevice = '';
-                    document.getElementById("collapse-device-selector").value = "";
+                    document.getElementById("collapse-device-selector").value = undefined;
                 }}>Project ICE</a>
         </mdui-top-app-bar-title>
         <div style="flex-grow: 1"></div>

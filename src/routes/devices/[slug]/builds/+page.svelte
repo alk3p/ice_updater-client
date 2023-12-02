@@ -23,9 +23,9 @@
     <title>Project ICE Downloads</title>
 </svelte:head>
 
-<mdui-collapse accordion>
+<mdui-collapse accordion id="collapse-ota-selector">
     {#each data.response as {id, datetime, filename, size, url, version}, i}
-    <mdui-collapse-item>
+    <mdui-collapse-item value="ota-item-{i}">
         <mdui-list-item rounded alignment="center" slot="header" icon="system_update">
             <p style="text-align: center; line-height: 1.08">{capitalize(version)} | {unixtime2str(datetime)}</p>
         </mdui-list-item>
