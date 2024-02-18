@@ -9,12 +9,12 @@ export async function load({ params }) {
         .then(v => v.json())
         .then(v => (v.response) ? v.response : [])
         .catch(() => {
-            throw error(500, 'Internal Server Error');
+            error(500, 'Internal Server Error');
         })));
     const response = responses[0].concat(responses[1]);
     if (response.length > 0) {
         return {"response": response.sort((a,b) => b.datetime - a.datetime)};
     } else {
-        throw error(404, 'Not Found');
+        error(404, 'Not Found');
     }
 }
